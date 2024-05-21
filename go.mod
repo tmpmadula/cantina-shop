@@ -1,4 +1,4 @@
-module api
+module github.com/tmpmadula/cantina-shop
 
 go 1.22
 
