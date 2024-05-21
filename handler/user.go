@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/tmpmadula/cantina-shop/model"
+	model "github.com/tmpmadula/cantina-shop/models"
 
 	"github.com/gorilla/mux"
 )

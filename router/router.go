@@ -3,9 +3,9 @@ package router
 import (
 	"database/sql"
 
-	"github.com/tmpmadula/cantina-shop/handler"
-
 	"github.com/gorilla/mux"
+
+	"github.com/tmpmadula/cantina-shop/handler"
 )
 
 func NewRouter(db *sql.DB) *mux.Router {
