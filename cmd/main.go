@@ -1,18 +1,21 @@
-// cmd/main.go
 package main
 
 import (
+	"log"
+
 	"github.com/tmpmadula/cantina-shop/internal/db"
 	"github.com/tmpmadula/cantina-shop/internal/router"
 )
 
 func main() {
-	// Initialize database
+	// Initialize the database
 	db.InitDB()
 
-	// Set up router
+	// Set up the router
 	r := router.SetupRouter()
 
 	// Run the server
-	r.Run(":8080")
+	if err := r.Run(":8080"); err != nil {
+		log.Fatal("Failed to run server: ", err)
+	}
 }

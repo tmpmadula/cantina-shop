@@ -1,5 +1,5 @@
 # Use the official Golang image as the base image
-FROM golang:1.18 AS builder
+FROM golang:1.22.0-bullseye AS builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -17,10 +17,13 @@ COPY . .
 RUN go build -o main ./cmd/main.go
 
 # Start a new stage from scratch
-FROM gcr.io/distroless/base-debian10
+FROM debian:bullseye-slim
 
 # Set the Current Working Directory inside the container
 WORKDIR /
+
+# Install the necessary libraries
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main /main
