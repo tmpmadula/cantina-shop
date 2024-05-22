@@ -1,6 +1,9 @@
 package config
 
 import (
+	"fmt"
+	"os"
+
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -11,4 +14,17 @@ var GoogleOauthConfig = &oauth2.Config{
 	ClientSecret: "niRBJRSWSpDeN48aN0GGz3wG",
 	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 	Endpoint:     google.Endpoint,
+}
+
+var (
+	DBHost     = os.Getenv("DB_HOST")
+	DBPort     = os.Getenv("DB_PORT")
+	DBUser     = os.Getenv("DB_USER")
+	DBPassword = os.Getenv("DB_PASSWORD")
+	DBName     = os.Getenv("DB_NAME")
+)
+
+func GetDBConnectionString() string {
+	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		DBHost, DBPort, DBUser, DBPassword, DBName)
 }

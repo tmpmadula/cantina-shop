@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/
 COPY --from=builder /app/main /main
 
 # Expose port 8080 to the outside world
-EXPOSE 8080
+EXPOSE 8000
 
 # Command to run the executable
 CMD ["/main"]

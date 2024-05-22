@@ -1,26 +1,20 @@
 // internal/api/dishes.go
+
 package api
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"github.com/tmpmadula/cantina-shop/internal/db"
 )
 
-func CreateDish(c *gin.Context) {
-	// Handle creation of dish
-}
-
-func GetDish(c *gin.Context) {
-	// Handle getting a single dish by ID
-}
-
-func ListDishes(c *gin.Context) {
-	// Handle listing all dishes
-}
-
-func UpdateDish(c *gin.Context) {
-	// Handle updating a dish by ID
-}
-
-func DeleteDish(c *gin.Context) {
-	// Handle deleting a dish by ID
+// GetDishesHandler handles fetching all dishes
+func GetDishesHandler(c *gin.Context) {
+	dishes, err := db.GetAllDishes()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, dishes)
 }

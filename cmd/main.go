@@ -15,7 +15,7 @@ func main() {
 	r := router.SetupRouter()
 
 	// Run the server
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(":8000"); err != nil {
 		log.Fatal("Failed to run server: ", err)
 	}
 }

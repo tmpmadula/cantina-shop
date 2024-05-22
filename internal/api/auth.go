@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -54,12 +55,15 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	// Create user
+	log.Print("Creating table")
 	user := &models.User{
 		Name:     request.Name,
 		Email:    request.Email,
 		Password: hashedPassword,
 		Verified: false,
 	}
+	log.Print("Creating table")
+	println(user)
 	if err := db.CreateUser(user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return

@@ -26,7 +26,7 @@ func SetupRouter() *gin.Engine {
 	r.GET("/auth/google/callback", api.GoogleCallbackHandler)
 
 	// Public routes
-	r.GET("/dishes", api.ListDishes)
+	r.GET("/dishes", api.GetDishesHandler)
 
 	// Protected routes
 	//auth := r.Group("/")

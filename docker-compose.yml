@@ -6,8 +6,7 @@ services:
     image: francescoxx/go-app:1.0.0
     build: .
     environment:
-      DATABASE_URL: "host=go_db user=postgres password=postgres dbname=postgres sslmode=disable"
-      ENV_VARIABLE: "ENV_VALUE"
+      DATABASE_URL: "host=go_db port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"
     ports:
       - "8000:8000"
     depends_on:
