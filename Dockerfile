@@ -1,20 +1,21 @@
-# use official Golang image
-FROM golang:1.16.3-alpine3.13
+# Use the official Golang image as the builder
+FROM golang:1.18-alpine AS builder
 
-# set working directory
 WORKDIR /app
 
-# Copy the source code
-COPY . . 
+COPY go.mod go.sum ./
+RUN go mod download
 
-# Download and install the dependencies
-RUN go get -d -v ./...
+COPY . .
+RUN go build -o main ./cmd/app
 
-# Build the Go app
-RUN go build -o api .
+# Use a minimal image for the final container
+FROM alpine:latest
 
-#EXPOSE the port
+WORKDIR /app
+
+COPY --from=builder /app/main /app/main
+
 EXPOSE 8000
 
-# Run the executable
-CMD ["./api"]
+CMD ["/app/main"]

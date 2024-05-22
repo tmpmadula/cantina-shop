@@ -2,11 +2,12 @@ package main
 
 import (
 	"log"
-	"myapp/internal/db"
-	"myapp/internal/middleware"
-	"myapp/router"
 	"net/http"
 	"os"
+
+	"github.com/tmpmadula/cantina-shop/internal/db"
+	"github.com/tmpmadula/cantina-shop/internal/middleware"
+	"github.com/tmpmadula/cantina-shop/router"
 )
 
 func main() {

@@ -5,8 +5,9 @@ import (
 	"database/sql"
 	"encoding/json"
 	"log"
-	"myapp/internal/models"
 	"net/http"
+
+	"github.com/tmpmadula/cantina-shop/internal/models"
 
 	"github.com/gorilla/mux"
 )
