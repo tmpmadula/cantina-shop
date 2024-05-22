@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  go-app:
+    container_name: cantina-app
+    image: francescoxx/go-app:1.0.0
+    build: .
+    environment:
+      DATABASE_URL: "host=cantina_db user=postgres password=postgres dbname=postgres sslmode=disable"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - cantina_db
+  cantina_db:
+    container_name: cantina_db
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
