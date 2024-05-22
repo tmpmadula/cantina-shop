@@ -2,20 +2,17 @@
 package main
 
 import (
-	"github.com/tmpmadula/cantina-shop/internal/api"
 	"github.com/tmpmadula/cantina-shop/internal/db"
-
-	"github.com/gin-gonic/gin"
+	"github.com/tmpmadula/cantina-shop/internal/router"
 )
 
 func main() {
-	r := gin.Default()
-
 	// Initialize database
 	db.InitDB()
 
-	// Initialize API routes
-	api.InitRoutes(r)
+	// Set up router
+	r := router.SetupRouter()
 
+	// Run the server
 	r.Run(":8080")
 }

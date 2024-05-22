@@ -5,8 +5,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func createUser(c *gin.Context) {
+func CreateUser(c *gin.Context) {
 	// Handle creation of user
 }
 
-// Other user handlers
+func GetUser(c *gin.Context) {
+	// Handle getting a single user by ID
+}
+
+func UpdateUser(c *gin.Context) {
+	// Handle updating a user by ID
+}
+
+func DeleteUser(c *gin.Context) {
+	// Handle deleting a user by ID
+}
