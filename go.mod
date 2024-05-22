@@ -1,4 +1,4 @@
-module api
+module cantina-shop
 
 go 1.22
 
