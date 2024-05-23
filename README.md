@@ -99,3 +99,18 @@ swagger generate spec -o ./docs/swagger.json --scan-models
 ```
 
 
+# Strategies for Performance Improvement
+- Horizontal Scaling
+Kubernetes: Deploy your application on Kubernetes to scale horizontally and manage containerized applications efficiently.
+Auto Scaling: Use auto-scaling groups to automatically adjust the number of running instances based on traffic load.
+- Microservices Architecture
+Break down the monolithic application into smaller, independent services that can be developed, deployed, and scaled independently.
+- API Gateway
+Use an API Gateway to handle load balancing, rate limiting, and authentication, offloading these responsibilities from the application servers.
+- Serverless Architecture
+Consider using serverless functions (e.g., AWS Lambda, Google Cloud Functions) for certain endpoints to handle unpredictable loads.
+- Database Optimization
+Use read replicas to distribute the read load across multiple database instances.
+Optimize database schema and queries to improve performance.
+- Profiling and Monitoring
+Implement application performance monitoring (APM) tools like New Relic, Datadog, or Prometheus to continuously monitor performance and identify bottlenecks.

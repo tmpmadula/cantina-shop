@@ -73,6 +73,17 @@ func Connect(databaseURL string) (*sql.DB, error) {
 	}
 
 	// Create logs table for user logins and system errors
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS logs (
+			id SERIAL PRIMARY KEY,
+			user_id INTEGER,
+			action TEXT,
+			time TIMESTAMP
+		)
+	`)
+	if err != nil {
+		return nil, err
+	}
 
 	return db, nil
 }

@@ -36,7 +36,9 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.20.0
 	github.com/gorilla/mux v1.8.1 // indirect
+	github.com/juju/ratelimit v1.0.2
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/swaggo/http-swagger v1.3.4
+	github.com/urfave/negroni v1.0.0
 )

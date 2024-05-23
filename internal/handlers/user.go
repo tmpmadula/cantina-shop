@@ -111,6 +111,8 @@ func LoginUser(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		// add logging
+
 		json.NewEncoder(w).Encode(map[string]string{
 			"token": token,
 		})

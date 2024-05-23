@@ -5,12 +5,24 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/juju/ratelimit"
 	httpSwagger "github.com/swaggo/http-swagger"
 	_ "github.com/tmpmadula/cantina-shop/docs"
 	"github.com/tmpmadula/cantina-shop/internal/db"
 	"github.com/tmpmadula/cantina-shop/internal/middleware"
 	"github.com/tmpmadula/cantina-shop/router"
+	"github.com/urfave/negroni"
 )
+
+func rateLimitMiddleware(bucket *ratelimit.Bucket) negroni.Handler {
+	return negroni.HandlerFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+		if bucket.TakeAvailable(1) == 0 {
+			http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
+			return
+		}
+		next(w, r)
+	})
+}
 
 // @title Cantina Shop API
 // @version 1.0
@@ -34,6 +46,13 @@ func main() {
 		log.Fatal(err)
 	}
 	defer database.Close()
+
+	// Use Negroni for middleware
+	n := negroni.Classic()
+
+	// Add rate limiting middleware
+	bucket := ratelimit.NewBucketWithRate(10, 10) // 10 requests per second
+	n.Use(rateLimitMiddleware(bucket))
 
 	// Initialize router
 	r := router.NewRouter(database)
