@@ -4,10 +4,10 @@ package router
 import (
 	"database/sql"
 
+	"github.com/gorilla/mux"
+	"github.com/tmpmadula/cantina-shop/internal/auth"
 	"github.com/tmpmadula/cantina-shop/internal/handlers"
 	"github.com/tmpmadula/cantina-shop/internal/middleware"
-
-	"github.com/gorilla/mux"
 )
 
 func NewRouter(db *sql.DB) *mux.Router {
@@ -16,6 +16,9 @@ func NewRouter(db *sql.DB) *mux.Router {
 	// Public routes
 	router.HandleFunc("/register", handlers.RegisterUser(db)).Methods("POST")
 	router.HandleFunc("/login", handlers.LoginUser(db)).Methods("POST")
+
+	router.HandleFunc("/auth/google/login", auth.HandleGoogleLogin).Methods("GET")
+	router.HandleFunc("/auth/google/callback", auth.HandleGoogleCallback(db)).Methods("GET")
 
 	// Protected routes
 	api := router.PathPrefix("/api").Subrouter()

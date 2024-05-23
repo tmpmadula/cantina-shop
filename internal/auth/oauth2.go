@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/tmpmadula/cantina-shop/internal/auth/"
 	"github.com/tmpmadula/cantina-shop/internal/models"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -73,12 +72,12 @@ func HandleGoogleCallback(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		tokenString, err := auth.GenerateJWT(user.Email)
+		//	tokenString, err := auth.GenerateJWT(user.Email)
 		if err != nil {
 			http.Error(w, "Failed to generate token: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		http.Redirect(w, r, "/?token="+tokenString, http.StatusTemporaryRedirect)
+		http.Redirect(w, r, "/?token=", http.StatusTemporaryRedirect)
 	}
 }

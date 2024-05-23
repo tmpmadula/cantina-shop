@@ -3,6 +3,7 @@ package middleware
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"regexp"
 
@@ -29,6 +30,7 @@ func ValidateUser(user *models.User) error {
 	if err := validate.Struct(user); err != nil {
 		return err
 	}
+	log.Print(user.Email)
 	if !isValidEmail(user.Email) {
 		return ErrInvalidEmail
 	}
@@ -122,8 +124,10 @@ func ReviewValidationMiddleware(next http.Handler) http.Handler {
 
 // Helper functions
 func isValidEmail(email string) bool {
-	// Regular expression to validate email format
+	// Regular expression to validate email format | example email: tmp@test.com
+
 	re := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
+
 	return re.MatchString(email)
 }
 

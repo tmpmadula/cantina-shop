@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/tmpmadula/cantina-shop/internal/auth"
+	"github.com/tmpmadula/cantina-shop/internal/middleware"
 
 	"github.com/tmpmadula/cantina-shop/internal/models"
 
@@ -17,7 +18,22 @@ import (
 func RegisterUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var user models.User
+
 		if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// validate user data | check if everything is filled and if the email is valid
+
+		// check empty fields
+		if user.Name == "" || user.Email == "" || user.Password == "" {
+			http.Error(w, "All fields are required", http.StatusBadRequest)
+			return
+		}
+
+		if err := middleware.ValidateUser(&user); err != nil {
+			log.Print(user)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -30,6 +46,13 @@ func RegisterUser(db *sql.DB) http.HandlerFunc {
 
 		user.Password = hashedPassword
 		user.Role = "user" // Default role
+
+		// check if the email is already in use
+		err = db.QueryRow("SELECT id FROM users WHERE email = $1", user.Email).Scan(&user.ID)
+		if err == nil {
+			http.Error(w, "Email already in use", http.StatusBadRequest)
+			return
+		}
 
 		err = db.QueryRow("INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id",
 			user.Name, user.Email, user.Password, user.Role).Scan(&user.ID)
@@ -90,7 +113,7 @@ func GetUsers(db *sql.DB) http.HandlerFunc {
 		users := []models.User{}
 		for rows.Next() {
 			var u models.User
-			if err := rows.Scan(&u.ID, &u.Name, &u.Email); err != nil {
+			if err := rows.Scan(&u.ID, &u.Name, &u.Email, &u.Password, &u.Role); err != nil {
 				log.Fatal(err)
 			}
 			users = append(users, u)
