@@ -42,6 +42,12 @@ func NewRouter(db *sql.DB) *mux.Router {
 	router.HandleFunc("/drinks/{id}", handlers.UpdateDrink(db)).Methods("PUT")
 	router.HandleFunc("/drinks/{id}", handlers.DeleteDrink(db)).Methods("DELETE")
 
+	api.HandleFunc("/reviews", handlers.GetReviews(db)).Methods("GET")
+	api.HandleFunc("/reviews/{id}", handlers.GetReview(db)).Methods("GET")
+	api.HandleFunc("/reviews", handlers.CreateReview(db)).Methods("POST")
+	api.HandleFunc("/reviews/{id}", handlers.UpdateReview(db)).Methods("PUT")
+	api.HandleFunc("/reviews/{id}", handlers.DeleteReview(db)).Methods("DELETE")
+
 	return router
 }
 

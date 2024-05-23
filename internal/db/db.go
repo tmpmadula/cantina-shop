@@ -57,5 +57,22 @@ func Connect(databaseURL string) (*sql.DB, error) {
 		return nil, err
 	}
 
+	// Create reviews table if it doesn't exist
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS reviews (
+			id SERIAL PRIMARY KEY,
+			user_id INTEGER,
+			dish_id INTEGER,
+			drink_id INTEGER,
+			rating INTEGER,
+			comment TEXT
+		)
+	`)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create logs table for user logins and system errors
+
 	return db, nil
 }

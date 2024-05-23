@@ -22,6 +22,8 @@ This is a RESTful API for managing users, dishes, drinks, and reviews with user 
 - PostgreSQL 12 or higher
 - Docker 
 
+
+
 ## Getting Started
 
 1. Clone the repository:
@@ -36,6 +38,8 @@ git clone
 ```bash
 docker-compose up -d
 ```
+
+You can use applications like TablePlus or pgAdmin to connect to the database with the following credentials: ![screenshot](images/db.png)
 
 3. run the following command to build and run the application in docker container:
     

@@ -1,4 +1,3 @@
-// internal/handlers/user.go
 package handlers
 
 import (
@@ -15,6 +14,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// @Summary Register a new user
+// @Description Register a new user
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param user body models.User true "User object that needs to be registered"
+// @Success 200 {object} models.User
+// @Router /register [post]
 func RegisterUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var user models.User
@@ -65,6 +72,14 @@ func RegisterUser(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+// @Summary Login a user
+// @Description Login a user
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param credentials body struct { Email string `json:"email"` Password string `json:"password"` } true "Credentials object that needs to be logged in"
+// @Success 200 {object} map[string]string
+// @Router /login [post]
 func LoginUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var credentials struct {
@@ -102,6 +117,13 @@ func LoginUser(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+// @Summary Get all users
+// @Description Get details of all users
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.User
+// @Router /api/users [get]
 func GetUsers(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("SELECT * FROM users")

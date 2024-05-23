@@ -14,17 +14,33 @@ import (
 
 var googleOauthConfig = &oauth2.Config{
 	RedirectURL:  "http://localhost:8000/callback",
-	ClientID:     "your-client-id",
-	ClientSecret: "your-client-secret",
+	ClientID:     "822314717402-o2g7eeau9h5uc6patrcofi2o1n58j5tn.apps.googleusercontent.com",
+	ClientSecret: "niRBJRSWSpDeN48aN0GGz3wG",
 	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 	Endpoint:     google.Endpoint,
 }
 
+// @Summary Login with Google
+// @Description Login with Google
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Success 302 {string} string "Redirects to Google login page"
+// @Router /google/login [get]
 func HandleGoogleLogin(w http.ResponseWriter, r *http.Request) {
 	url := googleOauthConfig.AuthCodeURL("randomState")
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
+// @Summary Google callback
+// @Description Google callback
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param state query string true "State parameter"
+// @Param code query string true "Code parameter"
+// @Success 302 {string} string "Redirects to home page"
+// @Router /callback [get]
 func HandleGoogleCallback(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		state := r.FormValue("state")
