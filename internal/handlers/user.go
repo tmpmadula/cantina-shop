@@ -7,10 +7,77 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/tmpmadula/cantina-shop/internal/auth"
+
 	"github.com/tmpmadula/cantina-shop/internal/models"
 
 	"github.com/gorilla/mux"
 )
+
+func RegisterUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var user models.User
+		if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		hashedPassword, err := auth.HashPassword(user.Password)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		user.Password = hashedPassword
+		user.Role = "user" // Default role
+
+		err = db.QueryRow("INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id",
+			user.Name, user.Email, user.Password, user.Role).Scan(&user.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(w).Encode(user)
+	}
+}
+
+func LoginUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var credentials struct {
+			Email    string `json:"email"`
+			Password string `json:"password"`
+		}
+
+		if err := json.NewDecoder(r.Body).Decode(&credentials); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		var user models.User
+		err := db.QueryRow("SELECT id, name, email, password, role FROM users WHERE email = $1", credentials.Email).
+			Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Role)
+		if err != nil {
+			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+			return
+		}
+
+		if !auth.CheckPasswordHash(credentials.Password, user.Password) {
+			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+			return
+		}
+
+		token, err := auth.GenerateJWT(user.Email)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(w).Encode(map[string]string{
+			"token": token,
+		})
+	}
+}
 
 func GetUsers(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
