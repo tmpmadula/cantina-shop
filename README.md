@@ -79,9 +79,7 @@ The API provides the following endpoints:
 - `POST /reviews`: Create a new review.
 - `PUT /reviews/{id}`: Update a review by ID.
 - `DELETE /reviews/{id}`: Delete a review by ID.
-- `GET /health`: Check the health of the API.
-- `GET /metrics`: Get metrics for the API.
-- `GET /ready`: Check if the API is ready.
+
 
 NB: The API requires authentication for most endpoints. You can use the JWT token obtained from the `/login` endpoint or the Google OAuth2 token for authentication.
 
