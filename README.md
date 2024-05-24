@@ -29,14 +29,14 @@ This is a RESTful API for managing users, dishes, drinks, and reviews with user 
 1. Clone the repository:
 
 ```bash
-git clone
+git clone https://github.com/tmpmadula/cantina-shop.git
 ```
 
 
 2. Run the following command to start the PostgreSQL database in a Docker container:
 
 ```bash
-docker-compose up -d
+docker-compose up -d cantina-db
 ```
 
 You can use applications like TablePlus or pgAdmin to connect to the database with the following credentials: ![screenshot](images/db.png)
@@ -44,7 +44,11 @@ You can use applications like TablePlus or pgAdmin to connect to the database wi
 3. run the following command to build and run the application in docker container:
     
     ```bash
-    docker-compose up --build
+    docker-compose build
+    ```
+
+        ```bash
+    docker-compose up go-app
     ```
 
 5. The API will be available at `http://localhost:8080`.
@@ -78,6 +82,8 @@ The API provides the following endpoints:
 - `GET /health`: Check the health of the API.
 - `GET /metrics`: Get metrics for the API.
 - `GET /ready`: Check if the API is ready.
+
+NB: The API requires authentication for most endpoints. You can use the JWT token obtained from the `/login` endpoint or the Google OAuth2 token for authentication.
 
 
 ## Swagger Documentation
